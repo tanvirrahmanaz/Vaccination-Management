@@ -1,0 +1,204 @@
+@tailwind components;
+
+@layer components {
+  .app-shell {
+    @apply min-h-screen bg-slate-100 lg:grid lg:grid-cols-[240px_1fr];
+  }
+
+  .sidebar {
+    @apply flex flex-col gap-8 border-b border-slate-200 bg-white px-6 py-8 lg:h-screen lg:border-b-0 lg:border-r;
+  }
+
+  .sidebar-header {
+    @apply flex flex-col gap-1;
+  }
+
+  .brand {
+    @apply inline-flex h-12 w-12 items-center justify-center rounded-xl bg-sky-500 font-semibold tracking-widest text-white;
+  }
+
+  .nav {
+    @apply flex flex-col gap-2;
+  }
+
+  .nav-item {
+    @apply rounded-xl px-3 py-2 font-semibold text-slate-500 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-900;
+  }
+
+  .nav-item.active {
+    @apply bg-sky-100 text-sky-600;
+  }
+
+  .logout {
+    @apply mt-auto inline-flex items-center justify-center rounded-xl border border-red-500 bg-red-50 px-3 py-2 font-semibold text-red-600 transition-colors hover:bg-red-500 hover:text-white;
+  }
+
+  .main {
+    @apply flex flex-col;
+  }
+
+  .topbar {
+    @apply border-b border-slate-200 bg-white px-6 py-6 lg:px-10;
+  }
+
+  .topbar-content {
+    @apply flex flex-wrap items-center justify-between gap-6;
+  }
+
+  .workspace {
+    @apply flex flex-col gap-6 bg-slate-100 px-6 py-8 lg:px-10;
+  }
+
+  .dashboard,
+  .page {
+    @apply flex flex-col gap-6;
+  }
+
+  .card {
+    @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_45px_-30px_rgba(15,23,42,0.25)];
+  }
+
+  .card-header {
+    @apply mb-4 flex flex-col gap-1;
+  }
+
+  .stat-grid {
+    @apply grid gap-4 sm:grid-cols-2 xl:grid-cols-3;
+  }
+
+  .stat-card {
+    @apply flex flex-col gap-1;
+  }
+
+  .stat-value {
+    @apply text-4xl font-semibold;
+  }
+
+  .timeline {
+    @apply grid gap-4;
+  }
+
+  .reviews {
+    @apply grid gap-4;
+  }
+
+  .review-item {
+    @apply grid gap-2 rounded-xl border border-slate-200 bg-slate-50 p-4;
+  }
+
+  .review-header {
+    @apply flex items-center justify-between;
+  }
+
+  .form-grid {
+    @apply grid gap-4 md:grid-cols-2;
+  }
+
+  .form-grid label {
+    @apply grid gap-2 text-sm font-semibold text-slate-600;
+  }
+
+  .form-grid input,
+  .form-grid textarea,
+  .form-grid select {
+    @apply w-full rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100;
+  }
+
+  .form-grid textarea {
+    @apply resize-y;
+  }
+
+  .status-grid {
+    @apply grid gap-4 sm:grid-cols-2 xl:grid-cols-3;
+  }
+
+  .status-tile {
+    @apply grid gap-1 rounded-xl border border-slate-200 bg-slate-50 p-4;
+  }
+
+  .muted {
+    @apply text-sm text-slate-500;
+  }
+
+  .muted.small,
+  .muted.small-base {
+    @apply text-xs;
+  }
+
+  .table {
+    @apply w-full border-collapse text-sm;
+  }
+
+  .table thead {
+    @apply bg-slate-50;
+  }
+
+  .table th,
+  .table td {
+    @apply border-b border-slate-200 px-3 py-2 text-left align-middle;
+  }
+
+  .table tbody tr:hover {
+    @apply bg-slate-50;
+  }
+
+  .chip {
+    @apply inline-flex items-center justify-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600;
+  }
+
+  .chip.rating {
+    @apply bg-sky-100 text-sky-600;
+  }
+
+  .status-booked {
+    @apply bg-blue-100 text-blue-600;
+  }
+
+  .status-completed {
+    @apply bg-emerald-100 text-emerald-600;
+  }
+
+  .status-pending {
+    @apply bg-amber-100 text-amber-600;
+  }
+
+  .status-na {
+    @apply bg-slate-100 text-slate-500;
+  }
+
+  button {
+    @apply inline-flex items-center justify-center rounded-xl bg-sky-500 px-4 py-2 font-semibold text-white shadow-sm transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  button.ghost {
+    @apply border border-red-500 bg-transparent text-red-600 hover:bg-red-500 hover:text-white;
+  }
+
+  .error {
+    @apply rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600;
+  }
+
+  .success {
+    @apply rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-600;
+  }
+
+  .error-card {
+    @apply rounded-2xl border border-red-200 bg-red-50 p-6 text-red-600;
+  }
+
+  .auth-screen {
+    @apply flex min-h-screen items-center justify-center bg-slate-100 px-4;
+  }
+
+  .auth-card {
+    @apply w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-xl;
+  }
+
+  .centered {
+    @apply flex min-h-[60vh] flex-col items-center justify-center gap-4 text-slate-600;
+  }
+
+  .spinner {
+    @apply h-10 w-10 animate-spin rounded-full border-2 border-slate-200 border-t-sky-500;
+  }
+}
