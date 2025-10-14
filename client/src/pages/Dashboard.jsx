@@ -12,6 +12,7 @@ export default function Dashboard() {
   const [bookings, setBookings] = useState([])
   const [reviews, setReviews] = useState([])
   const [patients, setPatients] = useState([])
+  const [warnings, setWarnings] = useState([])
 
   useEffect(() => {
     let cancelled = false
@@ -19,22 +20,63 @@ export default function Dashboard() {
       setLoading(true)
       setError('')
       try {
-        const [campaignList, bookingList, reviewList, userList] = await Promise.all([
+        const [campaignResult, bookingResult, reviewResult, userResult] = await Promise.allSettled([
           listCampaigns(),
           listBookings(),
           listReviews(),
           listUsers(),
         ])
-        if (!cancelled) {
-          setCampaigns(campaignList)
-          setBookings(bookingList)
-          setReviews(reviewList)
-          setPatients(userList.filter((user) => user.role === 'PATIENT'))
+
+        if (cancelled) {
+          return
+        }
+
+        const nextWarnings = []
+
+        if (campaignResult.status === 'fulfilled') {
+          setCampaigns(campaignResult.value)
+        } else {
+          console.error('Failed to load campaigns', campaignResult.reason)
+          nextWarnings.push('campaigns')
+        }
+
+        if (bookingResult.status === 'fulfilled') {
+          setBookings(bookingResult.value)
+        } else {
+          console.error('Failed to load bookings', bookingResult.reason)
+          nextWarnings.push('bookings')
+        }
+
+        if (reviewResult.status === 'fulfilled') {
+          setReviews(reviewResult.value)
+        } else {
+          console.error('Failed to load reviews', reviewResult.reason)
+          nextWarnings.push('reviews')
+        }
+
+        if (userResult.status === 'fulfilled') {
+          setPatients(userResult.value.filter((user) => user.role === 'PATIENT'))
+        } else {
+          console.error('Failed to load users', userResult.reason)
+          nextWarnings.push('users')
+        }
+
+        const successfulLoads = [campaignResult, bookingResult, reviewResult, userResult].filter(
+          (result) => result.status === 'fulfilled',
+        ).length
+
+        if (successfulLoads === 0) {
+          setError('Unable to load dashboard data. Please verify the API server is running.')
+          setWarnings([])
+        } else {
+          setError('')
+          setWarnings(nextWarnings)
         }
       } catch (error) {
         console.error('Failed to load dashboard data', error)
         if (!cancelled) {
           setError('Unable to load dashboard data. Please verify the API server is running.')
+          setWarnings([])
         }
       } finally {
         if (!cancelled) {
@@ -102,6 +144,15 @@ export default function Dashboard() {
       )}
 
       {error && <div className="card error-card">{error}</div>}
+
+      {warnings.length > 0 && !error && (
+        <div className="card">
+          <h2>Partial data</h2>
+          <p className="muted">
+            Some sections did not load ({warnings.join(', ')}). Please retry once the API is available.
+          </p>
+        </div>
+      )}
 
       {!loading && !error && (
         <>

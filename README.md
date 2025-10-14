@@ -1,103 +1,36 @@
-# Vaccination Management Dashboard (React)
+# Ishanvai Monorepo
 
-A Vite + React single-page application for administering vaccination campaigns, patient bookings, and feedback. The UI is optimized for authenticated operators and consumes the Vaccination Management System REST API.
+This workspace now contains both the React dashboard and the Django REST backend for the Vaccination Management System.
 
-## Features
-- Secure login / registration flow with JWT session handling (Simple JWT compatible)
-- Dashboard insights with dose status breakdowns and pending booking highlights
-- Campaign CRUD with dose interval controls
-- Patient booking creation and inline status updates for both doses
-- Review feed with campaign + patient context
-- Tailwind CSS driven layout and responsive design
+## Structure
+- `client/` – Vite + React single-page app. Run `npm install && npm run dev` inside this folder for local development.
+- `server/` – Django 5 + DRF project cloned from `https://github.com/Ishan-shahnan/Vaccination-Management-System.git`.
 
-## Tech Stack
-- **React 19** with **React Router** for client-side routing
-- **Vite 7** toolchain
-- **Tailwind CSS 3** for styling
-- **Zustand** for lightweight global state (auth store)
-- **Axios** API client with automatic token refresh
-
-## Getting Started
-1. **Install dependencies**
+## Backend Quick Start (`server/`)
+1. `cd server`
+2. Create a virtual environment
    ```bash
-   npm install
+   python3 -m venv .venv
+   source .venv/bin/activate
    ```
-2. **Environment variables** – copy `.env.example` (or edit `.env`) and set the values listed below.
-3. **Run the dev server**
+3. Install dependencies
    ```bash
-   npm run dev
+   pip install -r requirements.txt
    ```
-4. Navigate to the printed URL (default `http://127.0.0.1:5173`).
+4. Apply migrations and start the API
+   ```bash
+   python manage.py migrate
+   python manage.py runserver
+   ```
 
-## Environment Variables
-| Variable | Description | Default |
-| --- | --- | --- |
-| `VITE_API_BASE` | Backend base URL (without trailing `/api`). | `https://vaccination-management-system-two.vercel.app` |
-| `VITE_REQUIRE_AUTH` | `true` to enforce login flow, `false` to skip auth while developing. | `false` |
-| `VITE_DEV_SERVER_HOST` | Host binding for `vite dev`. | `127.0.0.1` |
-| `VITE_DEV_SERVER_PORT` | Port for `vite dev`. | `5173` |
-| `VITE_PREVIEW_PORT` | Port for `vite preview`. | `4173` |
+Key endpoints:
+- API root: `http://127.0.0.1:8000/api/`
+- Swagger UI: `http://127.0.0.1:8000/api/docs/`
+- Auth: `/api/auth/token/`, `/api/auth/users/login/`, `/api/auth/users/register/` and more as documented in `server/README.md`.
 
-## Scripts
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start Vite dev server with hot reload. |
-| `npm run build` | Create production build in `dist/`. |
-| `npm run preview` | Preview the production build locally. |
-| `npm run lint` | Run ESLint across the project. |
+## Frontend Quick Start (`client/`)
+1. `cd client`
+2. `npm install`
+3. `npm run dev`
 
-## Project Structure (key folders)
-```
-src/
-  api/          # Axios clients for auth, campaigns, bookings, reviews
-  components/   # Layout + route guards
-  pages/        # Dashboard, Campaigns, Bookings, Reviews, Auth screens
-  store/        # Zustand auth store
-  constants/    # Shared enums and labels
-  App.jsx       # Router definition
-  index.css     # Tailwind entry point
-```
-
-## Authentication Flow
-1. `POST /auth/token/` with `{ username, password }` to receive `{ access, refresh }`.
-2. Include `Authorization: Bearer <access>` on protected requests.
-3. On `401`, the client automatically calls `POST /auth/token/refresh/` using the stored `refresh` token.
-4. User profile endpoints:
-   - `GET /auth/profile/`
-   - `PATCH /auth/profile/`
-   - `PUT /auth/change-password/`
-
-Zustand’s `authStore` persists tokens in `localStorage` (`vms_tokens`) and refreshes them through Axios interceptors.
-
-## API Quick Reference
-- **Campaigns**
-  - `GET /campaigns/`
-  - `POST /campaigns/`
-  - `PATCH /campaigns/{id}/`
-  - `DELETE /campaigns/{id}/`
-- **Bookings**
-  - `GET /bookings/`
-  - `POST /bookings/`
-  - `PATCH /bookings/{id}/`
-  - Fields include `dose1_date`, `dose2_date`, `dose1_status`, `dose2_status`, `patient`, `campaign`
-  - Status enums: `BOOKED`, `COMPLETED`, `PENDING`
-- **Reviews**
-  - `GET /reviews/`
-  - `POST /reviews/`
-  - Payload: `campaign`, `rating (1-5)`, `comment`
-- **Users**
-  - `POST /auth/users/register/`
-  - `GET /auth/users/` (used for resolving patient names in UI)
-
-For the full schema, open `/schema/swagger-ui/` on the backend service.
-
-## Styling Notes
-Tailwind is configured via `tailwind.config.js` with content scanning across `index.html` and all `src/**/*.{js,jsx,ts,tsx}` files. Custom classnames (e.g., `.card`, `.chip`) are defined in `src/App.css` using `@apply` to bundle Tailwind utilities.
-
-## Development Tips
-- Toggle `VITE_REQUIRE_AUTH` to `true` before shipping so the dashboard enforces login.
-- When adding new API calls, place shared Axios logic in `src/api/client.js` to inherit the refresh handling.
-- Keep enums in `src/constants/enums.js` synced with backend values to avoid mismatched labels.
-
----
-Need backend setup guidance or additional endpoints documented? Open an issue or add notes here so future contributors can extend the guide.
+Update the `VITE_API_BASE` value in `client/.env` to match the local Django server when running both sides together.

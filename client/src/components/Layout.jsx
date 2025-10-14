@@ -3,11 +3,7 @@ import { useAuthStore } from '../store/authStore'
 
 function NavItem({ to, label }) {
   return (
-    <NavLink
-      to={to}
-      className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}
-      end={to === '/'}
-    >
+    <NavLink to={to} className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`} end={to === '/dashboard'}>
       {label}
     </NavLink>
   )
@@ -31,7 +27,7 @@ export default function Layout() {
           <p>Vaccination Management</p>
         </div>
         <nav className="nav">
-          <NavItem to="/" label="Dashboard" />
+          <NavItem to="/dashboard" label="Dashboard" />
           <NavItem to="/campaigns" label="Campaigns" />
           <NavItem to="/bookings" label="Bookings" />
           <NavItem to="/reviews" label="Reviews" />

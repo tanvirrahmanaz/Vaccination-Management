@@ -15,6 +15,11 @@ export const createCampaign = async (payload) => {
   return response.data
 }
 
+export const replaceCampaign = async (id, payload) => {
+  const response = await api.put(`/campaigns/${id}/`, payload)
+  return response.data
+}
+
 export const updateCampaign = async (id, payload) => {
   const response = await api.patch(`/campaigns/${id}/`, payload)
   return response.data

@@ -10,6 +10,7 @@ import Campaigns from './pages/Campaigns'
 import Bookings from './pages/Bookings'
 import Reviews from './pages/Reviews'
 import Register from './pages/Register'
+import Home from './pages/Home'
 import { isAuthRequired } from './config'
 import { useAuthStore } from './store/authStore'
 
@@ -31,15 +32,17 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="campaigns" element={<Campaigns />} />
-            <Route path="bookings" element={<Bookings />} />
-            <Route path="reviews" element={<Reviews />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/campaigns" element={<Campaigns />} />
+            <Route path="/bookings" element={<Bookings />} />
+            <Route path="/reviews" element={<Reviews />} />
+            <Route index element={<Navigate to="/dashboard" replace />} />
           </Route>
         </Route>
 
